@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
 using NotebookForMe.Model;
+using NotebookForMe.Model.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,6 @@ namespace NotebookForMe
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public static MobileServiceClient MobileService = new MobileServiceClient("https://notebookforme.azurewebsites.net");
         private MobileServiceUser user;
 
         public MainPage()
@@ -37,23 +37,11 @@ namespace NotebookForMe
 
         public async void launch()
         {
-            //await AuthenticateAsync();
-            SearchMovie("007");
+            await AuthenticateAsync();
+            //SearchMovie("007");
         }
 
-        public async void GetMovie()
-        {
-            try
-            {
-                IMobileServiceTable<MovieItem> mMovieTable = MobileService.GetTable<MovieItem>();
-
-                List<MovieItem> items = await mMovieTable.ToListAsync();
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
+        
 
         private async System.Threading.Tasks.Task<bool> AuthenticateAsync()
         {
@@ -63,11 +51,10 @@ namespace NotebookForMe
             {
                 // Change 'MobileService' to the name of your MobileServiceClient instance.
                 // Sign-in using Facebook authentication.
-                user = await MobileService.LoginAsync(MobileServiceAuthenticationProvider.Google);
-                message =
-                    string.Format("You are now signed in - {0}", user.UserId);
-
+                user = await MobileConnection.get().LoginAsync(MobileServiceAuthenticationProvider.Google);
+                message = "You are now signed in";
                 success = true;
+                Session.set("googleSid", user.UserId);
             }
             catch (InvalidOperationException)
             {
@@ -81,20 +68,6 @@ namespace NotebookForMe
         }
 
 
-        private async void SearchMovie(string name)
-        {
-            try {
-                Dictionary<string, string> parameters = new Dictionary<string, string>();
-                parameters.Add("name", name);
-
-                var result = await MobileService.InvokeApiAsync<List<MovieItem>>("theMovieDB/SelectByName", System.Net.Http.HttpMethod.Get, parameters);
-                //     ListenableFuture<JsonElement> result = AppController.getInstance().getService().getmClient().invokeApi("spotify/SelectByTrack", "GET", parameters);
-                //invokeApi("google/GetGoogleInfo", "GET", null);
-            }
-            catch (Exception e)
-            {
-            }
-            }
     }
 }
 
