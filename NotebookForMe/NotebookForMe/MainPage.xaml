@@ -7,7 +7,91 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+
+        <DataTemplate x:Name="MovieTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Image Width="50" Height="50" Source="{Binding Poster}" Grid.Column="0"></Image>
+
+                <TextBlock Grid.Column="1" Padding="10">
+                    <Run Text="{Binding Title}" />
+                    <LineBreak />
+                    <Run Text="{Binding Overview}" FontSize="10" />
+                </TextBlock>
+
+            </Grid>
+        </DataTemplate>
         
+        <DataTemplate x:Name="MusicTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Image Width="50" Height="50" Source="{Binding PreviewUrl}" Grid.Column="0"></Image>
+
+                <TextBlock Grid.Column="1" Padding="10">
+                    <Run Text="{Binding Name}" />
+                    <LineBreak />
+                    <Run Text="Genre: " FontSize="10" />
+                    <Run Text="{Binding Genre}" FontSize="10" />
+                    <Run Text=" - Artiste " FontSize="10" />
+                    <Run Text="{Binding Genre}" FontSize="10" />
+                </TextBlock>
+
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot>
+            <Pivot.Items>
+                <PivotItem Header="Home">
+                    <Grid>
+                        <ListView Padding="5"
+                              ItemsSource="{Binding ListItems}"
+                              ItemTemplate="{StaticResource MovieTemplate}"/>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Header="Movie">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <TextBox x:Name="btn_find_movie" PlaceholderText="Search 'Star wars'" FontSize="20" TextChanged="btn_find_movie_TextChanged"></TextBox>
+                        <ListView Padding="5" Grid.Row="1"
+                              ItemsSource="{Binding MovieList}"
+                              ItemTemplate="{StaticResource MovieTemplate}"/>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Header="Music">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <TextBox x:Name="btn_find_music" PlaceholderText="Search 'ACDC'" FontSize="20" TextChanged="btn_find_music_TextChanged"></TextBox>
+                        <ListView Padding="5" Grid.Row="1"
+                              ItemsSource="{Binding MusicList}"
+                              ItemTemplate="{StaticResource MusicTemplate}"/>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Header="Anime">
+                    <Grid>
+                        <TextBlock Text="Coming soon ;)" FontSize="20"></TextBlock>
+                    </Grid>
+                </PivotItem>
+            </Pivot.Items>
+        </Pivot>
     </Grid>
 </Page>

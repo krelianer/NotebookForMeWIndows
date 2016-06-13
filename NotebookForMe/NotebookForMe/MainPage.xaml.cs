@@ -34,5 +34,19 @@ namespace NotebookForMe
             this.InitializeComponent();
             this.DataContext = this.context;
         }
+
+        private void btn_find_movie_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox item = sender as TextBox;
+
+            context.FindMovie(item.Text);
+        }
+
+        private void btn_find_music_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox item = sender as TextBox;
+
+            context.FindMusic(item.Text);
+        }
     }
 }

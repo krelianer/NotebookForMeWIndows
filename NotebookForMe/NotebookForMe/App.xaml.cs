@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.WindowsAzure.MobileServices;
 using NotebookForMe.Model;
+using NotebookForMe.Model.Utils;
 
 namespace NotebookForMe
 {
@@ -76,7 +77,15 @@ namespace NotebookForMe
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(Login), e.Arguments);
+                    var googleSid = Session.get("googleSid");
+
+                    if (googleSid != null)
+                    {
+                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    } else
+                    {
+                        rootFrame.Navigate(typeof(Login), e.Arguments);
+                    }
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();

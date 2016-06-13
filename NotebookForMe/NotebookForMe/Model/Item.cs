@@ -23,6 +23,24 @@ namespace NotebookForMe.Model
         public int Popularity { get; set; }
         public string Genre { get; set; }
         public string PreviewUrl { get; set; }
+
+        public static async Task<List<MusicItem>> SearchMusic(string name)
+        {
+            try
+            {
+                Dictionary<string, string> parameters = new Dictionary<string, string>();
+                parameters.Add("name", name);
+
+                List<MusicItem> items = await MobileConnection.get().InvokeApiAsync<List<MusicItem>>("theMusicDB/SelectByName", System.Net.Http.HttpMethod.Get, parameters);
+                //     ListenableFuture<JsonElement> result = AppController.getInstance().getService().getmClient().invokeApi("spotify/SelectByTrack", "GET", parameters);
+                //invokeApi("google/GetGoogleInfo", "GET", null);
+                return items;
+            }
+            catch (Exception e)
+            {
+            }
+            return new List<MusicItem>();
+        }
     }
 
     public class MovieItem : Item
@@ -49,20 +67,22 @@ namespace NotebookForMe.Model
         }
 
 
-        public async void SearchMovie(string name)
+        public static async Task<List<MovieItem>> SearchMovie(string name)
         {
             try
             {
                 Dictionary<string, string> parameters = new Dictionary<string, string>();
                 parameters.Add("name", name);
 
-                var result = await MobileConnection.get().InvokeApiAsync<List<MovieItem>>("theMovieDB/SelectByName", System.Net.Http.HttpMethod.Get, parameters);
+                List<MovieItem> items = await MobileConnection.get().InvokeApiAsync<List<MovieItem>>("theMovieDB/SelectByName", System.Net.Http.HttpMethod.Get, parameters);
                 //     ListenableFuture<JsonElement> result = AppController.getInstance().getService().getmClient().invokeApi("spotify/SelectByTrack", "GET", parameters);
                 //invokeApi("google/GetGoogleInfo", "GET", null);
+                return items;
             }
             catch (Exception e)
             {
             }
+            return new List<MovieItem>();
         }
     }
 }
