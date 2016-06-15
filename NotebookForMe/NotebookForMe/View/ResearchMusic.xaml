@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="NotebookForMe.View.ResearchMusic"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NotebookForMe.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Name="MusicTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>
+                    <Run Text="{Binding Name}" />
+                    <LineBreak />
+                    <Run Text="{Binding Genre}" FontSize="10" />
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox x:Name="textbox_find_movie" PlaceholderText="Find your music" KeyUp="textbox_find_music_KeyUp"></TextBox>
+        <ListView Padding="5"
+                  Name="listResearch"
+                  Grid.Row="1"
+                  IsMultiSelectCheckBoxEnabled="True"
+                  SelectionMode="Multiple"
+                  ItemsSource="{Binding MusicList}"
+                  ItemTemplate="{StaticResource MusicTemplate}"/>
+        <Button Grid.Row="2" HorizontalAlignment="Stretch" Tapped="Button_Tapped">Submit</Button>
+
+    </Grid>
+</Page>

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -39,6 +40,8 @@ namespace NotebookForMe
                 var user = await MobileConnection.get().LoginAsync(MobileServiceAuthenticationProvider.Google);
 
                 Session.set("googleSid", user.UserId);
+                //String str = await MobileConnection.get().InvokeApiAsync<String>("google/GetGoogleInfo", HttpMethod.Get, null);
+
 
                 Frame.Navigate(typeof(MainPage));
             }

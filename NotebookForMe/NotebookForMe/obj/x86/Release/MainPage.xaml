@@ -1,0 +1,126 @@
+﻿<Page
+    x:Class="NotebookForMe.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NotebookForMe"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+
+    <Page.Resources>
+
+        <DataTemplate x:ConnectionId='1' x:Name="MovieTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Image Width="50" Height="50" Source="{Binding Poster}" Grid.Column="0"></Image>
+
+                <TextBlock Grid.Column="1" Padding="10">
+                    <Run Text="{Binding Title}" />
+                    <LineBreak />
+                    <Run Text="{Binding Overview}" FontSize="10" />
+                </TextBlock>
+
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate x:ConnectionId='2' x:Name="MusicTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Image Width="50" Height="50" Source="{Binding PreviewUrl}" Grid.Column="0"></Image>
+
+                <TextBlock Grid.Column="1" Padding="10">
+                    <Run Text="{Binding Name}" />
+                    <LineBreak />
+                    <Run Text="Genre: " FontSize="10" />
+                    <Run Text="{Binding Genre}" FontSize="10" />
+                    <Run Text=" - Artiste " FontSize="10" />
+                    <Run Text="{Binding Genre}" FontSize="10" />
+                </TextBlock>
+
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot Title="Notebook for me">
+            <Pivot.Items>
+                <PivotItem Header="Home">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ScrollViewer>
+                            <StackPanel>
+                                <Image Height="100"></Image>
+                                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                            <Run Text="Welcome" />
+                            <LineBreak />
+                            <LineBreak />
+                            <Run Text="Flavien" FontSize="30"/>
+                                </TextBlock>
+                                <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="0, 40">
+                            <Run Text="{Binding LeftHours}" />
+                            <Run Text=" hours,  " />
+                            <Run Text="{Binding LeftMinutes}" />
+                            <Run Text=" minutes left" />
+                                </TextBlock>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+                            <StackPanel Orientation="Vertical" Width="158">
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Release1.Title}"></TextBlock>
+                                <Image Source="{Binding Release1.Poster}" Height="150"></Image>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="158">
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Release2.Title}"></TextBlock>
+                                <Image Source="{Binding Release2.Poster}" Height="150"></Image>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Header="Movie">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <ListView Padding="5"
+                              ItemsSource="{Binding MovieList}"
+                              ItemTemplate="{StaticResource MovieTemplate}"/>
+                        <Button x:ConnectionId='4' Name="btn_add_movie" Grid.Row="1"                              >+</Button>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Header="Music">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <ListView Padding="5"
+                              ItemsSource="{Binding MusicList}"
+                              ItemTemplate="{StaticResource MusicTemplate}"/>
+                        <Button x:ConnectionId='3' Name="btn_add_music" Grid.Row="1"                              >+</Button>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Header="Anime">
+                    <Grid>
+                        <TextBlock Text="Coming soon ;)" FontSize="20"></TextBlock>
+                    </Grid>
+                </PivotItem>
+            </Pivot.Items>
+        </Pivot>
+    </Grid>
+</Page>
+

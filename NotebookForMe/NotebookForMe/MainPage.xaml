@@ -51,39 +51,68 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Pivot>
+        <Pivot Title="Notebook for me">
             <Pivot.Items>
                 <PivotItem Header="Home">
                     <Grid>
-                        <ListView Padding="5"
-                              ItemsSource="{Binding ListItems}"
-                              ItemTemplate="{StaticResource MovieTemplate}"/>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ScrollViewer>
+                            <StackPanel>
+                                <Image Height="100"></Image>
+                                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                            <Run Text="Welcome" />
+                            <LineBreak />
+                            <LineBreak />
+                            <Run Text="Flavien" FontSize="30"/>
+                                </TextBlock>
+                                <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="0, 40">
+                            <Run Text="{Binding LeftHours}" />
+                            <Run Text=" hours,  " />
+                            <Run Text="{Binding LeftMinutes}" />
+                            <Run Text=" minutes left" />
+                                </TextBlock>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+                            <StackPanel Orientation="Vertical" Width="158">
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Release1.Title}"></TextBlock>
+                                <Image Source="{Binding Release1.Poster}" Height="150"></Image>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="158">
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Release2.Title}"></TextBlock>
+                                <Image Source="{Binding Release2.Poster}" Height="150"></Image>
+                            </StackPanel>
+                        </StackPanel>
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="Movie">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBox x:Name="btn_find_movie" PlaceholderText="Search 'Star wars'" FontSize="20" TextChanged="btn_find_movie_TextChanged"></TextBox>
-                        <ListView Padding="5" Grid.Row="1"
+                        <ListView x:Name="list_movie" Padding="5"
                               ItemsSource="{Binding MovieList}"
-                              ItemTemplate="{StaticResource MovieTemplate}"/>
+                              ItemTemplate="{StaticResource MovieTemplate}" RightTapped="list_movie_RightTapped"/>
+                        <Button Name="btn_add_movie" Grid.Row="1" Tapped="btn_add_movie_Tapped">+</Button>
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="Music">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBox x:Name="btn_find_music" PlaceholderText="Search 'ACDC'" FontSize="20" TextChanged="btn_find_music_TextChanged"></TextBox>
-                        <ListView Padding="5" Grid.Row="1"
+                        <ListView x:Name="list_music" Padding="5"
+                                  AllowDrop="True"
                               ItemsSource="{Binding MusicList}"
-                              ItemTemplate="{StaticResource MusicTemplate}"/>
+                              ItemTemplate="{StaticResource MusicTemplate}" Holding="list_music_Holding"/>
+                        <Button Name="btn_add_music" Grid.Row="1" Tapped="btn_add_music_Tapped">+</Button>
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="Anime">

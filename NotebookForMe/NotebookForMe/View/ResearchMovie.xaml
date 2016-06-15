@@ -1,0 +1,41 @@
+﻿<Page
+    x:Class="NotebookForMe.View.ResearchMovie"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NotebookForMe.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Name="MovieTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Image Height="50" Source="{Binding Poster}" Margin="10,0"></Image>
+                <TextBlock>
+                    <Run Text="{Binding Title}" />
+                    <LineBreak />
+                    <Run Text="{Binding Overview}" FontSize="10" />
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox x:Name="textbox_find_movie" PlaceholderText="Find your movie" KeyUp="textbox_find_movie_KeyUp"></TextBox>
+        <ListView Padding="5"
+                  Name="listResearc"
+                  Grid.Row="1"
+                  IsMultiSelectCheckBoxEnabled="True"
+                  SelectionMode="Multiple"
+                  ItemsSource="{Binding MovieList}"
+                  ItemTemplate="{StaticResource MovieTemplate}">
+        </ListView>
+        <Button Grid.Row="2" HorizontalAlignment="Stretch" Tapped="Button_Tapped">Submit</Button>
+    </Grid>
+</Page>

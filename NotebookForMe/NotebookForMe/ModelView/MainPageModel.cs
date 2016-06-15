@@ -1,4 +1,6 @@
-﻿using NotebookForMe.Model;
+﻿using GalaSoft.MvvmLight;
+using NotebookForMe.Model;
+using NotebookForMe.Model.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,11 +11,10 @@ using Windows.UI.Xaml.Input;
 
 namespace NotebookForMe.ModelView
 {
-    public class MainPageModel
+    public class MainPageModel : ViewModelBase
     {
-        private ObservableCollection<Item> _listItems = new ObservableCollection<Item>();
-        private ObservableCollection<MovieItem> _movieList = new ObservableCollection<MovieItem>();
         private ObservableCollection<MusicItem> _musicList = new ObservableCollection<MusicItem>();
+        private ObservableCollection<MovieItem> _movieList = new ObservableCollection<MovieItem>();
 
         public MainPageModel()
         {
@@ -22,17 +23,25 @@ namespace NotebookForMe.ModelView
 
         public async void InitializeModel()
         {
-            List<MovieItem> list = await MovieItem.GetMovie();
+            List<MovieItem> movies = await MovieItem.GetMovie();
 
-            list.ToList().ForEach(_listItems.Add);
-        }
+            movies.ToList().ForEach(_movieList.Add);
 
-        public ObservableCollection<Item> ListItems
-        {
-            get
-            {
-                return this._listItems;
-            }
+            RaisePropertyChanged("MovieList");
+            RaisePropertyChanged("Release1");
+            RaisePropertyChanged("Release2");
+            RaisePropertyChanged("LeftHours");
+            RaisePropertyChanged("LeftMinutes");
+
+            List<MusicItem> musics = await MusicItem.GetMusic();
+
+            musics.ToList().ForEach(_musicList.Add);
+
+            RaisePropertyChanged("MusicList");
+            RaisePropertyChanged("Release1");
+            RaisePropertyChanged("Release2");
+            RaisePropertyChanged("LeftHours");
+            RaisePropertyChanged("LeftMinutes");
         }
 
         public ObservableCollection<MusicItem> MusicList
@@ -42,7 +51,6 @@ namespace NotebookForMe.ModelView
                 return this._musicList;
             }
         }
-
         public ObservableCollection<MovieItem> MovieList
         {
             get
@@ -51,20 +59,76 @@ namespace NotebookForMe.ModelView
             }
         }
 
-        public async void FindMovie(String query)
+        public String LeftHours
         {
-            List<MovieItem> list = await MovieItem.SearchMovie(query);
+            get
+            {
+                int time = 0;
 
-            _movieList.Clear();
-           list.ToList().ForEach(_movieList.Add);
+                this._movieList.ToList().ForEach(delegate (MovieItem item)
+                {
+                    time += item.Duration / 60000;
+                });
+                this._musicList.ToList().ForEach(delegate (MusicItem item)
+                {
+                    time += item.Duration / 60000;
+                });
+
+                return Convert.ToString(time / 60);
+            }
+        }
+        public String LeftMinutes
+        {
+            get
+            {
+                int time = 0;
+
+                this._movieList.ToList().ForEach(delegate (MovieItem item)
+                {
+                    time += item.Duration / 60000;
+                });
+                this._musicList.ToList().ForEach(delegate (MusicItem item)
+                {
+                    time += item.Duration / 60000;
+                });
+
+                return Convert.ToString(time % 60);
+            }
         }
 
-        public async void FindMusic(String query)
+        public Item Release1
         {
-            List<MusicItem> list = await MusicItem.SearchMusic(query);
+            get
+            {
+                if (this._movieList.Count > 0)
+                {
+                    return this._movieList[0];
+                }
+                return null;
+            }
+        }
+        public Item Release2
+        {
+            get
+            {
+                if (this._movieList.Count > 1)
+                {
+                    return this._movieList[1];
+                }
+                return null;
+            }
+        }
 
-            _musicList.Clear();
-            list.ToList().ForEach(_musicList.Add);
+        public async void Remove_movie(MovieItem movie, int index)
+        {
+            _movieList.RemoveAt(index);
+            await MobileConnection.get().GetTable<MovieItem>().DeleteAsync(movie);
+        }
+
+        public async void Remove_music(MusicItem music, int index)
+        {
+            _musicList.RemoveAt(index);
+            await MobileConnection.get().GetTable<MusicItem>().DeleteAsync(music);
         }
     }
 }

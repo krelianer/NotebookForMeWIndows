@@ -2,6 +2,7 @@
 using NotebookForMe.Model;
 using NotebookForMe.Model.Utils;
 using NotebookForMe.ModelView;
+using NotebookForMe.View;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,18 +36,38 @@ namespace NotebookForMe
             this.DataContext = this.context;
         }
 
-        private void btn_find_movie_TextChanged(object sender, TextChangedEventArgs e)
+        private void btn_add_movie_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            TextBox item = sender as TextBox;
-
-            context.FindMovie(item.Text);
+            Frame.Navigate(typeof(ResearchMovie));
         }
 
-        private void btn_find_music_TextChanged(object sender, TextChangedEventArgs e)
+        private void btn_add_music_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            TextBox item = sender as TextBox;
+            Frame.Navigate(typeof(ResearchMusic));
+        }
 
-            context.FindMusic(item.Text);
+        private void list_movie_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            ListView list = sender as ListView;
+
+            MovieItem movie = list.SelectedItem as MovieItem;
+
+            if (movie != null)
+            {
+                context.Remove_movie(movie, list.SelectedIndex);
+            }
+        }
+
+        private void list_music_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            ListView list = sender as ListView;
+
+            MusicItem music = list.SelectedItem as MusicItem;
+
+            if (music != null)
+            {
+                context.Remove_music(music, list.SelectedIndex);
+            }
         }
     }
 }

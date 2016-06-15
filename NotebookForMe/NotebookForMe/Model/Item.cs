@@ -24,6 +24,22 @@ namespace NotebookForMe.Model
         public string Genre { get; set; }
         public string PreviewUrl { get; set; }
 
+        public static async Task<List<MusicItem>> GetMusic()
+        {
+            try
+            {
+                IMobileServiceTable<MusicItem> mMovieTable = MobileConnection.get().GetTable<MusicItem>();
+                List<MusicItem> items = await mMovieTable
+                    .Where(e => e.UserId == Session.get("googleSid")).ToListAsync();
+                return items;
+            }
+            catch (Exception e)
+            {
+
+            }
+            return new List<MusicItem>();
+        }
+
         public static async Task<List<MusicItem>> SearchMusic(string name)
         {
             try
@@ -31,9 +47,8 @@ namespace NotebookForMe.Model
                 Dictionary<string, string> parameters = new Dictionary<string, string>();
                 parameters.Add("name", name);
 
-                List<MusicItem> items = await MobileConnection.get().InvokeApiAsync<List<MusicItem>>("theMusicDB/SelectByName", System.Net.Http.HttpMethod.Get, parameters);
-                //     ListenableFuture<JsonElement> result = AppController.getInstance().getService().getmClient().invokeApi("spotify/SelectByTrack", "GET", parameters);
-                //invokeApi("google/GetGoogleInfo", "GET", null);
+                List<MusicItem> items = await MobileConnection.get().InvokeApiAsync<List<MusicItem>>("spotify/SelectByTrack", System.Net.Http.HttpMethod.Get, parameters);
+
                 return items;
             }
             catch (Exception e)
@@ -56,7 +71,8 @@ namespace NotebookForMe.Model
             try
             {
                 IMobileServiceTable<MovieItem> mMovieTable = MobileConnection.get().GetTable<MovieItem>();
-                List<MovieItem> items = await mMovieTable.ToListAsync();
+                List<MovieItem> items = await mMovieTable
+                    .Where(e => e.UserId == Session.get("googleSid")).ToListAsync();
                 return items;
             }
             catch (Exception e)
@@ -66,7 +82,6 @@ namespace NotebookForMe.Model
             return new List<MovieItem>();
         }
 
-
         public static async Task<List<MovieItem>> SearchMovie(string name)
         {
             try
@@ -75,8 +90,7 @@ namespace NotebookForMe.Model
                 parameters.Add("name", name);
 
                 List<MovieItem> items = await MobileConnection.get().InvokeApiAsync<List<MovieItem>>("theMovieDB/SelectByName", System.Net.Http.HttpMethod.Get, parameters);
-                //     ListenableFuture<JsonElement> result = AppController.getInstance().getService().getmClient().invokeApi("spotify/SelectByTrack", "GET", parameters);
-                //invokeApi("google/GetGoogleInfo", "GET", null);
+
                 return items;
             }
             catch (Exception e)
