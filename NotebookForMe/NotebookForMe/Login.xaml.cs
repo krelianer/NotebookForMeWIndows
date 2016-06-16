@@ -40,8 +40,6 @@ namespace NotebookForMe
                 var user = await MobileConnection.get().LoginAsync(MobileServiceAuthenticationProvider.Google);
 
                 Session.set("googleSid", user.UserId);
-                //String str = await MobileConnection.get().InvokeApiAsync<String>("google/GetGoogleInfo", HttpMethod.Get, null);
-
 
                 Frame.Navigate(typeof(MainPage));
             }

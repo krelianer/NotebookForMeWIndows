@@ -1,10 +1,12 @@
 ﻿using GalaSoft.MvvmLight;
+using Newtonsoft.Json.Linq;
 using NotebookForMe.Model;
 using NotebookForMe.Model.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Input;
@@ -23,6 +25,10 @@ namespace NotebookForMe.ModelView
 
         public async void InitializeModel()
         {
+            //Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+            //JObject str = await MobileConnection.get().InvokeApiAsync<JObject>("google/GetGoogleInfo", HttpMethod.Get, parameters);
+
             List<MovieItem> movies = await MovieItem.GetMovie();
 
             movies.ToList().ForEach(_movieList.Add);
